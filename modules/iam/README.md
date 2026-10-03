@@ -14,7 +14,7 @@ Additive project IAM bindings plus keyless GitHub Actions access through Workloa
 
 | Name | Version |
 |------|---------|
-| google | 8.5.0 |
+| google | >= 8.0, < 9.0 |
 
 ### Resources
 

@@ -14,7 +14,7 @@ Key ring with two customer-managed keys rotated every 90 days or less: one for G
 
 | Name | Version |
 |------|---------|
-| google | 8.5.0 |
+| google | >= 8.0, < 9.0 |
 
 ### Resources
 
