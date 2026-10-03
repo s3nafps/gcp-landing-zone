@@ -1,0 +1,6 @@
+# Inline #checkov:skip comments document each accepted exception next to the code.
+framework:
+  - terraform
+compact: true
+quiet: true
+download-external-modules: false

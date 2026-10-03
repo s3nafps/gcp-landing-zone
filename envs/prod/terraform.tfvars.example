@@ -1,0 +1,14 @@
+project_id = "my-project-id"
+region     = "europe-west1"
+
+master_authorized_networks = [
+  { cidr_block = "203.0.113.10/32", display_name = "admin-vpn" },
+]
+
+github_repository = "s3nafps/gcp-landing-zone"
+
+project_roles = {
+  "roles/container.viewer" = ["group:platform-viewers@example.com"]
+}
+
+# billing_account = "000000-000000-000000"

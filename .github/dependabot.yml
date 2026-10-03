@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+  - package-ecosystem: terraform
+    directories: ["/bootstrap", "/envs/dev", "/envs/prod"]
+    schedule:
+      interval: monthly
