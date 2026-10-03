@@ -14,7 +14,7 @@ Private GKE Standard cluster: private nodes, authorized control-plane networks, 
 
 | Name | Version |
 |------|---------|
-| google | 8.5.0 |
+| google | >= 8.0, < 9.0 |
 
 ### Resources
 

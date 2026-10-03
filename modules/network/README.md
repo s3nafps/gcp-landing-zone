@@ -14,7 +14,7 @@ Custom-mode VPC with a GKE subnet (pod and service secondary ranges, Private Goo
 
 | Name | Version |
 |------|---------|
-| google | 8.5.0 |
+| google | >= 8.0, < 9.0 |
 
 ### Resources
 
