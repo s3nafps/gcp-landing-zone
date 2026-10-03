@@ -1,0 +1,5 @@
+project_id        = "my-seed-project"
+bucket_name       = "my-org-tfstate-1a2b3c"
+location          = "EU"
+access_log_bucket = "my-org-access-logs"
+state_admins      = ["serviceAccount:github-ci@my-project-id.iam.gserviceaccount.com"]

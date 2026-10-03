@@ -1,0 +1,52 @@
+name: Plan
+
+# Runs terraform plan for dev on pull requests and posts it as a comment.
+# Authenticates with Workload Identity Federation as the read-only plan account,
+# so no Google credentials are stored in GitHub. Skipped until the repository
+# variables below are set (see README, "Keyless CI").
+on:
+  pull_request:
+    paths: ["envs/**", "modules/**"]
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+jobs:
+  plan:
+    if: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER != '' }}
+    runs-on: ubuntu-latest
+    env:
+      TF_IN_AUTOMATION: "1"
+      TF_VAR_project_id: ${{ vars.GCP_PROJECT_ID }}
+      TF_VAR_github_repository: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_PLAN_SERVICE_ACCOUNT }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.16.5
+
+      - name: Init
+        run: terraform -chdir=envs/dev init -input=false -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}"
+
+      - name: Plan
+        id: plan
+        # -lock=false: the plan account can read state but not write the lock file.
+        run: terraform -chdir=envs/dev plan -input=false -no-color -lock=false | tee plan.txt
+
+      - name: Comment the plan on the pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let plan = fs.readFileSync('plan.txt', 'utf8');
+            if (plan.length > 60000) plan = plan.slice(-60000);
+            const body = `### Terraform plan: \`envs/dev\`\n\n<details><summary>Show plan</summary>\n\n\`\`\`hcl\n${plan}\n\`\`\`\n</details>`;
+            await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
