@@ -42,7 +42,7 @@ jobs:
         run: terraform -chdir=envs/dev plan -input=false -no-color -lock=false | tee plan.txt
 
       - name: Comment the plan on the pull request
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
