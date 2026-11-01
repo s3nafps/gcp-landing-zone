@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.TF_VERSION }}
       - run: terraform fmt -check -recursive -diff
@@ -31,7 +31,7 @@ jobs:
         root: [bootstrap, envs/dev, envs/prod]
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.TF_VERSION }}
       - run: terraform -chdir=${{ matrix.root }} init -backend=false -input=false
@@ -46,7 +46,7 @@ jobs:
         module: [gke, network, iam, kms, landing-zone]
     steps:
       - uses: actions/checkout@v7
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${{ env.TF_VERSION }}
       - run: terraform -chdir=modules/${{ matrix.module }} init -backend=false -input=false
